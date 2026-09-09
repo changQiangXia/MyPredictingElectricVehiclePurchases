@@ -1,0 +1,6 @@
+# Optional diversity experiments. Install after requirements.txt.
+# Match the reference CUDA build first; see docs/reproducibility.md.
+torch==2.1.2
+tabm==0.0.3
+rtdl_num_embeddings==0.0.12
+ctboost==0.1.60

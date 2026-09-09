@@ -1,0 +1,45 @@
+# Competition data and downloaded archives.
+*.csv
+*.zip
+*.parquet
+*.feather
+/original/
+/intel/
+
+# Generated model, prediction, and experiment artifacts.
+/artifacts/
+*.npy
+*.npz
+*.joblib
+*.ubj
+*.cbm
+*.pt
+*.pth
+*.onnx
+*.bin
+*.safetensors
+*.log
+
+# Python and notebook caches.
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+.venv/
+venv/
+
+# Credentials and local configuration.
+.env
+.env.*
+.kaggle/
+kaggle.json
+access_token
+*.pem
+*.key
+**/submission_receipt.json
+
+# Internal competition notes and public-source audit material.
+/offline_experiments_*.md
+/docs/internal/

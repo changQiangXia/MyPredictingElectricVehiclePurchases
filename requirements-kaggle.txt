@@ -1,0 +1,4 @@
+# Optional authenticated CLI, separate from the training environment.
+# Reference environment: Python 3.11.16. Never needed by offline CI.
+kaggle==2.2.4
+requests==2.34.2
