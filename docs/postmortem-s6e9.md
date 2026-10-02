@@ -72,6 +72,9 @@
 
 ## 可复用的选件清单（下次同类比赛）
 
+> 完整分类教训（验证方法、建模死路、公开榜机制、流程工程、合规）见
+> [`docs/lessons-s6e9.md`](lessons-s6e9.md)。
+
 1. 给每份候选标注来源链：是否 rank-blend 了探针件、是否使用了 public 反馈、OOF 出处。
 2. 维护两池：honest 池（严格外层 OOF、零 public 反馈）与 probe 池；public 分只对 probe 池
    内部排序有效。

@@ -13,6 +13,8 @@ Kaggle **Playground Series S6E9 — Predicting Electric Vehicle Purchases** 的�
 >
 > 只想看结果和教训：**[`docs/postmortem-s6e9.md`](docs/postmortem-s6e9.md)**（最终名次、
 > public/private 反向机理、可复用的选件清单）。
+> 系统化的分类教训（验证方法 / 建模死路 / 公开榜机制 / 流程工程 / 合规）：
+> **[`docs/lessons-s6e9.md`](docs/lessons-s6e9.md)**。
 
 ---
 
@@ -34,11 +36,12 @@ Kaggle **Playground Series S6E9 — Predicting Electric Vehicle Purchases** 的�
 
 1. **[`docs/experiment-log-s6e9.md`](docs/experiment-log-s6e9.md)** — **全程探索脉络（主入口）**；
 2. [`docs/postmortem-s6e9.md`](docs/postmortem-s6e9.md) — 最终结果、public→private 反转的证据与选件教训；
-3. [`docs/script-index.md`](docs/script-index.md) — 72 个脚本的分类索引（主流程 / 可选模型 / 诊断 / 历史）；
-4. [`docs/reproducibility.md`](docs/reproducibility.md) — 数据、折划分、编码、工件与复现契约；
-5. [`docs/sources.md`](docs/sources.md) — 公开 notebook/讨论来源与许可状态；
-6. [`docs/release-checklist.md`](docs/release-checklist.md) — 公开推送前的发布闸门与合规检查；
-7. [`docs/top_trick_strategy_2026-09-10.md`](docs/top_trick_strategy_2026-09-10.md) — 赛中的中文策略结论快照。
+3. [`docs/lessons-s6e9.md`](docs/lessons-s6e9.md) — **分类教训清单**（验证/建模/公开榜/选件/流程/合规）；
+4. [`docs/script-index.md`](docs/script-index.md) — 72 个脚本的分类索引（主流程 / 可选模型 / 诊断 / 历史）；
+5. [`docs/reproducibility.md`](docs/reproducibility.md) — 数据、折划分、编码、工件与复现契约；
+6. [`docs/sources.md`](docs/sources.md) — 公开 notebook/讨论来源与许可状态；
+7. [`docs/release-checklist.md`](docs/release-checklist.md) — 公开推送前的发布闸门与合规检查；
+8. [`docs/top_trick_strategy_2026-09-10.md`](docs/top_trick_strategy_2026-09-10.md) — 赛中的中文策略结论快照。
 
 ### 项目结构（详细）
 
@@ -95,6 +98,7 @@ Kaggle **Playground Series S6E9 — Predicting Electric Vehicle Purchases** 的�
 | `tests/test_repository_tools.py` | 发布检查器与提交守卫（`--confirm-upload`）的单测 |
 | `docs/experiment-log-s6e9.md` | **全程时间线总记录（主入口）** |
 | `docs/postmortem-s6e9.md` | 赛后复盘：最终成绩、public/private 反转、选件教训 |
+| `docs/lessons-s6e9.md` | **分类教训清单**：验证方法、建模死路、公开榜机制、选件规则、流程工程、合规与凭据 |
 | `docs/script-index.md` | 脚本分类索引与各自输出约定 |
 | `docs/reproducibility.md` | 数据、折、编码、工件、重跑契约 |
 | `docs/sources.md` | 公开来源链接与许可待办 |
@@ -177,6 +181,8 @@ receipts and credentials stay local and are ignored by Git.
 > original local records.
 >
 > Results and lessons only: **[`docs/postmortem-s6e9.md`](docs/postmortem-s6e9.md)**.
+> Categorised lessons (validation / modelling dead ends / leaderboard mechanics / process /
+> compliance): **[`docs/lessons-s6e9.md`](docs/lessons-s6e9.md)**.
 
 ### Final result
 
@@ -194,11 +200,12 @@ files reached 6th on the public board before finishing 213th on private.
 
 1. **[`docs/experiment-log-s6e9.md`](docs/experiment-log-s6e9.md)** — **full exploration timeline (start here)**;
 2. [`docs/postmortem-s6e9.md`](docs/postmortem-s6e9.md) — final result, the public→private reversal, selection lessons;
-3. [`docs/script-index.md`](docs/script-index.md) — what each of the 72 scripts does;
-4. [`docs/reproducibility.md`](docs/reproducibility.md) — data, folds, encoding and artifact contracts;
-5. [`docs/sources.md`](docs/sources.md) — public references and license status;
-6. [`docs/release-checklist.md`](docs/release-checklist.md) — the public-release gate;
-7. [`docs/top_trick_strategy_2026-09-10.md`](docs/top_trick_strategy_2026-09-10.md) — the in-competition strategy snapshot (Chinese).
+3. [`docs/lessons-s6e9.md`](docs/lessons-s6e9.md) — **categorised lessons** (validation / modelling / leaderboard / selection / process / compliance);
+4. [`docs/script-index.md`](docs/script-index.md) — what each of the 72 scripts does;
+5. [`docs/reproducibility.md`](docs/reproducibility.md) — data, folds, encoding and artifact contracts;
+6. [`docs/sources.md`](docs/sources.md) — public references and license status;
+7. [`docs/release-checklist.md`](docs/release-checklist.md) — the public-release gate;
+8. [`docs/top_trick_strategy_2026-09-10.md`](docs/top_trick_strategy_2026-09-10.md) — the in-competition strategy snapshot (Chinese).
 
 ### Project structure (detailed)
 
@@ -255,6 +262,7 @@ directly (`python scripts/xxx.py`) or import them with `scripts/` on `sys.path`.
 | `tests/test_repository_tools.py` | Unit tests for the release checker and the `--confirm-upload` submission guard |
 | `docs/experiment-log-s6e9.md` | **Full exploration timeline (main entry point)** |
 | `docs/postmortem-s6e9.md` | Final result, public/private reversal, selection lessons |
+| `docs/lessons-s6e9.md` | **Categorised lessons**: validation, modelling dead ends, leaderboard mechanics, selection rules, process, compliance |
 | `docs/script-index.md` | Script categories and output contracts |
 | `docs/reproducibility.md` | Data, folds, encoding, artifacts and re-run contracts |
 | `docs/sources.md` | Public references and outstanding license review |
