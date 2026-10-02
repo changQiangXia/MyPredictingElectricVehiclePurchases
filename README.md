@@ -32,6 +32,43 @@ Kaggle **Playground Series S6E9 — Predicting Electric Vehicle Purchases** 的�
 一句话复盘：本地诚实管线在 0.9464x 触顶；截止日靠公开探针文件的 rank 混合冲到 public 第 6，
 最终 private 第 213。
 
+### 公私榜教训（全场最贵的一课）
+
+public 第 6 → private 第 213，落差不来自模型变弱，而来自**最后一刻按 public 排名选件**。
+
+| 事实 | 数字 |
+| --- | --- |
+| 截止日 10 次提交的 public/private 相关 | **r = −0.76**（斜率 −0.79） |
+| public 第 1 的 B10（我们勾选的） | public 0.94691 → private 0.94551 |
+| public 最后 1 的 lucifer `oof_stack` | public 0.94672 → private **0.94565**（约第 79 名） |
+| 选件错误的代价 | 约 **134 个名次** |
+| 全部 50 次提交的相关 | r = +0.81，斜率 0.41（远离天花板时 public 仍然传导） |
+
+**为什么会反转。** 9/25 之后 public 前沿（0.9468–0.9470）已经不是独立模型，而是对 public 段反复
+探针、拟合的产物（megayak 自审：21 步 probing 在诚实 AUC 上是 `−14.45` 单位）。public 分数是
+"文件在 public 行上排序"的确定性函数，所以探针能精确读出 public 行标签，但这些收益只存在于
+public 行，private 上会回吐。越贴近天花板，public 排序越是负向信号：public 越高 → 对 public
+拟合越多 → private 期望越低。当日 private 极差 `0.94542–0.94565`（23 个 1e-4 单位），远大于
+噪声——这是选择问题，不是训练问题。
+
+**下次如何规避（写成流程，不靠临场判断）。**
+
+1. **两池记账**：honest 池（严格外层 OOF、零 public 反馈）与 probe 池（用了 public 反馈/探针件
+   rank 混合）从第一天起分开；public 分只在 probe 池内部排序有意义。
+2. **先估传导率**：用自己历史提交的 public→private 关系判断当前处于"传导区"还是"探针区"
+   （本场远离天花板 r=+0.81，探针区 r=−0.76）。候选 public 分差小于噪声（AUC 场约 `2–5e-4`）时，
+   一律按 private 期望排序。
+3. **定义 private 期望** ≈ 折内 OOF − public 拟合惩罚；惩罚项由"来源链 + 候选间逐行不一致率"估计。
+4. **两槽规则写死**：两池各取 private 期望最大者；同一池时，第二槽选与第一槽逐行最不相关的
+   高期望候选。**绝不按 public 排名勾选。**
+5. **截止日前预注册选件规则**，最后一小时只执行、不重新决策——防止被最后一次 public 刷新带走。
+6. **把探针当"买信息"**：leaderboard 取最高分使失败探针不扣分，但每发都要写清假设、E[max] 与
+   配额用途，且绝不让 probe 池占据最终两个槽。
+7. 赛后把真实传导率与选件结果回填到下一场的 checklist。
+
+完整推演与证据见 [`docs/lessons-s6e9.md`](docs/lessons-s6e9.md) 第 3、4 节与
+[`docs/postmortem-s6e9.md`](docs/postmortem-s6e9.md)。
+
 ### 推荐阅读路线
 
 1. **[`docs/experiment-log-s6e9.md`](docs/experiment-log-s6e9.md)** — **全程探索脉络（主入口）**；
@@ -195,6 +232,51 @@ receipts and credentials stay local and are ignored by Git.
 
 The honest local pipeline topped out around 0.9464x. On the final day a rank blend of public probe
 files reached 6th on the public board before finishing 213th on private.
+
+### Public vs private: the most expensive lesson
+
+6th on public → 213th on private was not a modelling failure; it was a **selection failure** made by
+following the public ranking at the last minute.
+
+| Fact | Number |
+| --- | --- |
+| Public/private correlation across the 10 deadline-day submissions | **r = −0.76** (slope −0.79) |
+| Public #1 B10 (the file we selected) | public 0.94691 → private 0.94551 |
+| Public last lucifer `oof_stack` | public 0.94672 → private **0.94565** (~79th) |
+| Cost of the selection mistake | ~**134 places** |
+| Correlation across all 50 submissions | r = +0.81, slope 0.41 (public still transmits away from the ceiling) |
+
+**Why it reverses.** After 2026-09-25 the public frontier (0.9468–0.9470) was no longer independent
+modelling; it was produced by repeatedly probing and fitting the public split (megayak's own audit:
+21 probing moves worth `−14.45` units of honest AUC). The public score is a deterministic function of
+a file's ordering on the public rows, so probes can read public labels precisely — but those gains
+exist only on public rows and revert on private rows. Near the ceiling the public ranking becomes a
+negative signal: higher public means more public fitting and lower private expectation. The
+deadline-day private spread was `0.94542–0.94565` (23 units of 1e-4), far above noise: a selection
+problem, not a modelling problem.
+
+**How to avoid it next time (a written process, not a judgement call).**
+
+1. **Keep two pools from day one**: an honest pool (strict outer-fold OOF, zero public feedback) and a
+   probe pool (public-feedback / probe-file rank blends). Public scores only order candidates inside
+   the probe pool.
+2. **Estimate the transfer rate first**: use your own public→private history to tell whether you are
+   in the transmitting regime (here r=+0.81 away from the ceiling) or the probe regime (r=−0.76).
+   When candidate public gaps are below noise (~`2–5e-4` for AUC), rank by private expectation.
+3. **Define private expectation** ≈ within-fold OOF − public-fitting penalty, where the penalty comes
+   from the source chain and the per-row disagreement between candidates.
+4. **Fix the two-slot rule in advance**: take the max private expectation from each pool; if both are
+   from the same pool, choose the least correlated high-expectation candidate as the second slot.
+   **Never select by public ranking.**
+5. **Pre-register the selection rule before the deadline** and only execute it in the final hour — do
+   not re-decide after the last public refresh.
+6. **Use probes to buy information**: the leaderboard keeps your maximum, so a failed probe costs no
+   score, but every probe needs a written hypothesis, E[max] and quota purpose — and the probe pool
+   must never occupy the final two slots.
+7. Feed the realised transfer rate and selection outcome back into the next competition's checklist.
+
+Full reasoning and evidence: [`docs/lessons-s6e9.md`](docs/lessons-s6e9.md) sections 3–4 and
+[`docs/postmortem-s6e9.md`](docs/postmortem-s6e9.md).
 
 ### Reading order
 
