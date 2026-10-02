@@ -20,6 +20,9 @@ competition rules still require publicly shared competition code to be posted on
 discussion forum or notebooks; read [`docs/release-checklist.md`](docs/release-checklist.md)
 before changing repository visibility or publishing.
 
+The full exploration trail — every phase, model, blend, probe and submission — is consolidated into
+[`docs/experiment-log-s6e9.md`](docs/experiment-log-s6e9.md).
+
 The canonical local workflow has fixed stratified folds, nested target encoding, OOF predictions, fold metrics, model checkpoints, and submission-file validation.
 
 ## Layout
