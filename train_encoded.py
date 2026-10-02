@@ -80,19 +80,30 @@ def main():
     parser.add_argument('--learning-rate', type=float, default=0.03)
     parser.add_argument('--iterations', type=int, default=6500)
     parser.add_argument('--model-seed', type=int, default=42)
+    parser.add_argument('--min-child-weight', type=float, default=10.0)
+    parser.add_argument('--subsample', type=float, default=0.9)
+    parser.add_argument('--colsample-bytree', type=float, default=0.85)
+    parser.add_argument('--reg-alpha', type=float, default=0.071)
+    parser.add_argument('--reg-lambda', type=float, default=2.0)
+    parser.add_argument('--gamma', type=float, default=0.0)
+    parser.add_argument('--grow-policy', choices=['depthwise', 'lossguide'], default='depthwise')
+    parser.add_argument('--max-leaves', type=int, default=0)
     parser.add_argument('--formula-margin', action='store_true')
     parser.add_argument('--margin-link', choices=['linear', 'probit'], default='linear')
     parser.add_argument('--max-bin', type=int, default=1024)
+    parser.add_argument('--smoothing-values', nargs='+', type=str,
+                        default=['auto', '10.0', '100.0'])
+    parser.add_argument('--fold-seed', type=int, default=42)
     args = parser.parse_args()
     out = ROOT / 'artifacts' / args.run
     out.mkdir(parents=True, exist_ok=True)
     start = time.time()
     train, test = pd.read_csv(ROOT / 'train.csv'), pd.read_csv(ROOT / 'test.csv')
     y = train[TARGET].eq('Yes').to_numpy(dtype='int8')
-    fold_path = ROOT / 'artifacts' / 'folds_seed42.npy'
+    fold_path = ROOT / 'artifacts' / f'folds_seed{args.fold_seed}.npy'
     if not fold_path.exists():
         fold_ids = np.full(len(train), -1, dtype='int8')
-        for f, (_, vi) in enumerate(StratifiedKFold(5, shuffle=True, random_state=42).split(train, y)):
+        for f, (_, vi) in enumerate(StratifiedKFold(5, shuffle=True, random_state=args.fold_seed).split(train, y)):
             fold_ids[vi] = f
         np.save(fold_path, fold_ids)
     fold_ids = np.load(fold_path)
@@ -115,14 +126,21 @@ def main():
         margin = formula_margin[:n].astype('float32')
         margin_t = formula_margin[n:].astype('float32')
     names = list(base.columns)
-    for smoothing in ('auto', 10.0, 100.0):
+    smoothing_values = tuple('auto' if s == 'auto' else float(s)
+                             for s in args.smoothing_values)
+    if not smoothing_values:
+        raise ValueError('at least one smoothing value is required')
+    for smoothing in smoothing_values:
         names += [f'{c}_TE_{smoothing}' for c in keys]
-    config = dict(vars(args), n_splits=5, fold_seed=42, inner_splits=5,
-                  smoothing=['auto', 10.0, 100.0], features=names,
+    config = dict(vars(args), n_splits=5, fold_seed=args.fold_seed, inner_splits=5,
+                  smoothing=list(smoothing_values), features=names,
                   frequency_scope='unlabeled train+test (transductive)',
                   category_mappings=category_mappings,
                   code_sha256=digest(Path(__file__)), fold_sha256=digest(fold_path),
                   train_sha256=digest(ROOT / 'train.csv'), test_sha256=digest(ROOT / 'test.csv'))
+    # `smoothing` is the canonical persisted setting.  Keep the newer CLI
+    # spelling out of the manifest so historical default runs remain resumable.
+    config.pop('smoothing_values', None)
     config_path = out / 'config.json'
     if config_path.exists():
         assert json.loads(config_path.read_text()) == config, 'Run config changed: use a new run ID'
@@ -147,7 +165,7 @@ def main():
         # mappings fitted on the outer training fold, never its held-out labels.
         train_parts, valid_parts, test_parts = [X[ti]], [X[vi]], [Xt]
         encoders = []
-        for smoothing in ('auto', 10.0, 100.0):
+        for smoothing in smoothing_values:
             enc = TargetEncoder(target_type='binary', smooth=smoothing, cv=5,
                                 shuffle=True, random_state=42)
             train_parts.append(enc.fit_transform(K[ti], y[ti]).astype('float32'))
@@ -161,9 +179,12 @@ def main():
             from xgboost import XGBClassifier
             model = XGBClassifier(device='cuda', tree_method='hist', max_bin=args.max_bin,
                                   n_estimators=args.iterations, max_depth=args.depth,
-                                  learning_rate=args.learning_rate, min_child_weight=10,
-                                  subsample=0.9, colsample_bytree=0.85, reg_alpha=0.071,
-                                  reg_lambda=2.0, objective='binary:logistic', eval_metric='auc',
+                                  learning_rate=args.learning_rate, min_child_weight=args.min_child_weight,
+                                  subsample=args.subsample, colsample_bytree=args.colsample_bytree,
+                                  reg_alpha=args.reg_alpha, reg_lambda=args.reg_lambda, gamma=args.gamma,
+                                  grow_policy=args.grow_policy,
+                                  **({'max_leaves': args.max_leaves} if args.max_leaves else {}),
+                                  objective='binary:logistic', eval_metric='auc',
                                   early_stopping_rounds=300, n_jobs=8, random_state=args.model_seed)
             fit_kwargs = {'eval_set': [(B, y[vi])], 'verbose': 500}
             if args.formula_margin:

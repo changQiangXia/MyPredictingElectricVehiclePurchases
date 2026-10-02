@@ -6,9 +6,21 @@ This workspace is intentionally data-free at the repository boundary. Competitio
 
 ## Current Status
 
-As of September 9, 2026, the competition is still active. This is a local, code-only repository prepared for a later GitHub mirror, not an approved public release. A private repository does not permit sharing with people outside the active team. Read [`docs/release-checklist.md`](docs/release-checklist.md) before granting access, changing visibility, or pushing competition code.
+The competition closed on September 30, 2026. Final result: **public 0.94691 (6th at the close)**
+and **private 0.94551 (213th, tied with eight teams)**. The two selected final submissions were the
+deadline-day public blend `B10` (`ref 56711566`) and the honest OOF candidate `priv_cand_v5_rl3_win`
+(`ref 56557482`); Kaggle scored the better of the two. The best private-robust file held that day was
+an OOF stack (`ref 56710849`, public 0.94672 / private 0.94565, roughly 79th place) and was not
+selected. See [`docs/postmortem-s6e9.md`](docs/postmortem-s6e9.md) for the full deadline-day
+selection postmortem and the reusable candidate-selection checklist.
 
-The canonical local workflow has fixed stratified folds, nested target encoding, OOF predictions, fold metrics, model checkpoints, and submission-file validation. New experiments are local-only until explicitly authorized.
+This is now a code-only archive. Competition data, downloaded public artifacts, model checkpoints,
+predictions, submission receipts, and credentials remain local and ignored by Git. The cached
+competition rules still require publicly shared competition code to be posted on Kaggle's
+discussion forum or notebooks; read [`docs/release-checklist.md`](docs/release-checklist.md)
+before changing repository visibility or publishing.
+
+The canonical local workflow has fixed stratified folds, nested target encoding, OOF predictions, fold metrics, model checkpoints, and submission-file validation.
 
 ## Layout
 
