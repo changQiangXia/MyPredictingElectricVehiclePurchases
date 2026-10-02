@@ -9,7 +9,7 @@ from scipy.stats import rankdata
 from sklearn.metrics import roc_auc_score
 
 
-ROOT = Path(__file__).resolve().parent
+ROOT = Path(__file__).resolve().parents[1]
 TARGET = "Will_Buy_EV"
 BASE = "offline_wave7_tabm_transfer25_v1"
 SEED_MODEL = "xgb_probit_10fold_seed2026_v1"

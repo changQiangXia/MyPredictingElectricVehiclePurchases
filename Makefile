@@ -19,7 +19,7 @@ verify:
 	$(PYTHON) tools/verify_project.py
 
 compile:
-	$(PYTHON) -m compileall -q *.py tools tests
+	$(PYTHON) -m compileall -q scripts tools tests
 
 test:
 	$(PYTHON) -m unittest discover -s tests -v
@@ -34,13 +34,13 @@ require-run:
 	$(if $(strip $(RUN)),,$(error Set RUN to a new experiment ID, e.g. make baseline RUN=repro_xgb_01))
 
 baseline: require-run
-	$(PYTHON) train_encoded.py --model xgb --run "$(RUN)"
+	$(PYTHON) scripts/train_encoded.py --model xgb --run "$(RUN)"
 
 nested: require-run
-	$(PYTHON) train_10fold_nested.py --run "$(RUN)"
+	$(PYTHON) scripts/train_10fold_nested.py --run "$(RUN)"
 
 tabm: require-run
-	$(PYTHON) train_tabm.py --run "$(RUN)"
+	$(PYTHON) scripts/train_tabm.py --run "$(RUN)"
 
 ctboost: require-run
-	$(PYTHON) train_ctboost.py --run "$(RUN)"
+	$(PYTHON) scripts/train_ctboost.py --run "$(RUN)"

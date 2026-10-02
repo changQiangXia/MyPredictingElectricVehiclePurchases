@@ -5,7 +5,7 @@ import numpy as np, pandas as pd
 from sklearn.metrics import roc_auc_score
 from sklearn.model_selection import StratifiedKFold
 from scipy.stats import rankdata
-ROOT=Path(__file__).resolve().parent
+ROOT=Path(__file__).resolve().parents[1]
 train=pd.read_csv(ROOT/'train.csv'); y=train.Will_Buy_EV.eq('Yes').to_numpy(np.int8); x=np.floor(train.Daily_Commute_km.to_numpy(float)/.25)*.25
 folds=StratifiedKFold(5,shuffle=True,random_state=2026); anchors={n:np.load(ROOT/'artifacts'/n/'oof.npy') for n in ['offline_wave5_conservative','offline_wave9_seed_transfer15_v1']}; out=[]
 for minimum in [10, 20]:

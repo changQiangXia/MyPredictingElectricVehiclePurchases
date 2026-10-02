@@ -9,7 +9,7 @@ from sklearn.model_selection import StratifiedKFold
 from sklearn.preprocessing import TargetEncoder
 import train_encoded as base
 
-ROOT=Path(__file__).resolve().parent
+ROOT=Path(__file__).resolve().parents[1]
 def main():
  import argparse
  ap=argparse.ArgumentParser(); ap.add_argument('--run',required=True); ap.add_argument('--depth',type=int,default=5); ap.add_argument('--learning-rate',type=float,default=.03); ap.add_argument('--iterations',type=int,default=6500); ap.add_argument('--model-seed',type=int,default=42); ap.add_argument('--original',action='store_true'); args=ap.parse_args()

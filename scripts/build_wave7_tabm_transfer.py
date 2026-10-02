@@ -15,7 +15,7 @@ from scipy.stats import rankdata
 from sklearn.metrics import roc_auc_score
 
 
-ROOT = Path(__file__).resolve().parent
+ROOT = Path(__file__).resolve().parents[1]
 TARGET = "Will_Buy_EV"
 ANCHOR = "offline_wave5_conservative"
 TABM = "tabm_formula_nested_10fold_reg_v1"

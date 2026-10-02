@@ -85,6 +85,6 @@
 ## 数据与复现
 
 - 50 次提交明细、截止日报告、混合权重表存在本地 `s6e9_public/`（不入库）。
-- 训练/复现脚本在本仓库根目录；数据、OOF、模型、下载的公开件与回执均被 `.gitignore` 排除。
+- 训练/复现脚本在 `scripts/` 目录；数据、OOF、模型、下载的公开件与回执均被 `.gitignore` 排除。
 - 公开来源与许可状态见 [`docs/sources.md`](sources.md)；发布闸门见
   [`docs/release-checklist.md`](release-checklist.md)。

@@ -13,7 +13,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import StratifiedKFold
 from sklearn.metrics import roc_auc_score
 
-ROOT=Path(__file__).resolve().parent
+ROOT=Path(__file__).resolve().parents[1]
 def main():
  tr=pd.read_csv(ROOT/'train.csv'); te=pd.read_csv(ROOT/'test.csv'); y=tr.Will_Buy_EV.eq('Yes').to_numpy()
  cols=[c for c in te if c!='id']; cats=[c for c in cols if tr[c].dtype=='object']; nums=[c for c in cols if c not in cats]

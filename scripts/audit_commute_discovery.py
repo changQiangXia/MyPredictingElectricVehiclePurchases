@@ -13,7 +13,7 @@ import pandas as pd
 from scipy.stats import rankdata
 from sklearn.metrics import roc_auc_score
 
-ROOT = Path(__file__).resolve().parent
+ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / 'artifacts' / 'commute_discovery_reaudit_v1'
 
 

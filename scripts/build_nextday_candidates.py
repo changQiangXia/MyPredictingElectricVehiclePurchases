@@ -8,7 +8,7 @@ import hashlib, json
 import numpy as np, pandas as pd
 from scipy.stats import rankdata
 
-ROOT = Path(__file__).resolve().parent
+ROOT = Path(__file__).resolve().parents[1]
 TARGET = 'Will_Buy_EV'
 
 def load(path):

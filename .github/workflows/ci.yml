@@ -22,7 +22,7 @@ jobs:
           scikit-learn==1.7.2
           joblib==1.6.0
       - name: Compile
-        run: python -m compileall -q *.py tools tests
+        run: python -m compileall -q scripts tools tests
       - name: Test
         run: python -m unittest discover -s tests -v
       - name: Repository safety check

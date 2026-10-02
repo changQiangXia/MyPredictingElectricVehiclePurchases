@@ -129,7 +129,7 @@ warnings.filterwarnings("ignore")
 
 TARGET = "Will_Buy_EV"
 
-ROOT = Path(__file__).resolve().parent
+ROOT = Path(__file__).resolve().parents[1]
 
 TRAIN_PATH = str(ROOT / "train.csv")
 TEST_PATH = str(ROOT / "test.csv")

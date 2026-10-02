@@ -13,7 +13,7 @@ import pandas as pd
 from scipy.stats import rankdata, spearmanr
 
 
-ROOT = Path(__file__).resolve().parent
+ROOT = Path(__file__).resolve().parents[1]
 TARGET = "Will_Buy_EV"
 BASE = "offline_wave7_tabm_transfer25_v1"
 

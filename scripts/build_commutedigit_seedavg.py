@@ -3,7 +3,7 @@ from pathlib import Path
 import hashlib,json
 import numpy as np,pandas as pd
 from scipy.stats import rankdata
-ROOT=Path(__file__).resolve().parent;T='Will_Buy_EV'
+ROOT=Path(__file__).resolve().parents[1];T='Will_Buy_EV'
 base=pd.read_csv(ROOT/'artifacts/probe_publicbest_v19_high_wm010/submission.csv');d1=pd.read_csv(ROOT/'artifacts/corrected_commute_digits_v1/submission.csv');d2=pd.read_csv(ROOT/'artifacts/corrected_commute_digits_seed2026/submission.csv');tr=pd.read_csv(ROOT/'train.csv');te=pd.read_csv(ROOT/'test.csv')
 br=rankdata(base[T].to_numpy(float),method='average')/(len(base)+1.0); dr=(rankdata(d1[T].to_numpy(float),method='average')+rankdata(d2[T].to_numpy(float),method='average'))/(2*(len(base)+1.0))
 x=np.floor(tr.Daily_Commute_km.to_numpy(float)/.25)*.25

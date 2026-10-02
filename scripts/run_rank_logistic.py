@@ -11,7 +11,7 @@ from sklearn.impute import SimpleImputer
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import StratifiedKFold
 from sklearn.metrics import roc_auc_score
-ROOT=Path(__file__).resolve().parent
+ROOT=Path(__file__).resolve().parents[1]
 def make(df):
  d=df.drop(columns=['id','Will_Buy_EV'],errors='ignore').copy()
  d['income_log']=np.log1p(d.Annual_Income_USD)

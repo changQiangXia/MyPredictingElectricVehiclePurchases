@@ -6,7 +6,7 @@ import lightgbm as lgb
 from sklearn.model_selection import StratifiedKFold
 from sklearn.metrics import roc_auc_score
 
-ROOT = Path(__file__).resolve().parent
+ROOT = Path(__file__).resolve().parents[1]
 TARGET, ID, SEED, N_SPLITS = "Will_Buy_EV", "id", 42, 3
 
 def make_features(train, test):

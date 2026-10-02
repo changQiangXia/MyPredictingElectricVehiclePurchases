@@ -1,11 +1,16 @@
 import unittest
+import sys
 from pathlib import Path
 
 import numpy as np
 import pandas as pd
 from sklearn.metrics import roc_auc_score
 
-from evaluate_offline import auc_placements, edges, paired_delta
+# The experiment scripts live in scripts/ and import each other as flat modules
+# (for example ``from train_encoded import ROOT``). Mirror that layout here.
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
+
+from evaluate_offline import auc_placements, edges, paired_delta  # noqa: E402
 from tools.check_git_release import SECRET_PATTERNS
 
 

@@ -65,7 +65,7 @@ def check_data(root: Path) -> list[str]:
 
 def check_code(root: Path) -> list[str]:
     errors: list[str] = []
-    sources = sorted(root.glob("*.py")) + sorted((root / "tools").glob("*.py")) + sorted((root / "tests").glob("*.py"))
+    sources = sorted((root / "scripts").glob("*.py")) + sorted((root / "tools").glob("*.py")) + sorted((root / "tests").glob("*.py"))
     if not sources:
         return ["no Python entry points found"]
     for source in sources:

@@ -9,7 +9,7 @@ from sklearn.metrics import roc_auc_score
 from catboost import CatBoostClassifier
 
 
-ROOT = Path(__file__).resolve().parent
+ROOT = Path(__file__).resolve().parents[1]
 SEED = 42
 N_SPLITS = 5
 TARGET = "Will_Buy_EV"

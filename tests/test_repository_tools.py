@@ -57,7 +57,7 @@ class GitIndexTest(unittest.TestCase):
 
 class SubmissionGuardTest(unittest.TestCase):
     def invoke(self, arguments):
-        script = Path(__file__).resolve().parents[1] / "submit_checked.py"
+        script = Path(__file__).resolve().parents[1] / "scripts" / "submit_checked.py"
         # No third-party packages are available with -S, so this also detects
         # accidental Kaggle imports before argument parsing and the upload guard.
         return subprocess.run([sys.executable, "-S", str(script), *arguments], capture_output=True, text=True, timeout=10)

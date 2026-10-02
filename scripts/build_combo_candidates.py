@@ -3,7 +3,7 @@ from pathlib import Path
 import hashlib, json
 import numpy as np, pandas as pd
 
-ROOT=Path(__file__).resolve().parent; T='Will_Buy_EV'
+ROOT=Path(__file__).resolve().parents[1]; T='Will_Buy_EV'
 def write(name,p,meta):
  out=ROOT/'artifacts'/name; out.mkdir(exist_ok=False)
  s=pd.read_csv(ROOT/'sample_submission.csv'); s[T]=p; s.to_csv(out/'submission.csv',index=False)

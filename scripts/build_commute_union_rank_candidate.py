@@ -4,7 +4,7 @@ import hashlib, json
 import pandas as pd
 from scipy.stats import rankdata
 
-ROOT = Path(__file__).resolve().parent
+ROOT = Path(__file__).resolve().parents[1]
 TARGET = 'Will_Buy_EV'
 base = pd.read_csv(ROOT / 'artifacts/probe_publicbest_v19_high_wm010/submission.csv')
 test = pd.read_csv(ROOT / 'test.csv')

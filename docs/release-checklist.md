@@ -39,7 +39,7 @@ The index checker reads the exact staged contents, including files changed or re
 
 ## GitHub Authentication
 
-Use SSH keys or a GitHub credential helper. Do not paste a GitHub token into a remote URL, script, notebook, commit message, or chat transcript. Confirm the remote URL and repository visibility before pushing. For Kaggle, `submit_checked.py` requires `--confirm-upload`; never weaken that guard to make automation convenient.
+Use SSH keys or a GitHub credential helper. Do not paste a GitHub token into a remote URL, script, notebook, commit message, or chat transcript. Confirm the remote URL and repository visibility before pushing. For Kaggle, `scripts/submit_checked.py` requires `--confirm-upload`; never weaken that guard to make automation convenient.
 
 ## After The Competition
 
