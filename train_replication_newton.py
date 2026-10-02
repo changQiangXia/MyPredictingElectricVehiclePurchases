@@ -114,6 +114,8 @@ import math
 import random
 import warnings
 
+from pathlib import Path
+
 import numpy as np
 import pandas as pd
 import torch
@@ -127,9 +129,11 @@ warnings.filterwarnings("ignore")
 
 TARGET = "Will_Buy_EV"
 
-TRAIN_PATH = "/root/autodl-tmp/playground-series-s6e9/train.csv"
-TEST_PATH = "/root/autodl-tmp/playground-series-s6e9/test.csv"
-SAMPLE_SUB_PATH = "/root/autodl-tmp/playground-series-s6e9/sample_submission.csv"
+ROOT = Path(__file__).resolve().parent
+
+TRAIN_PATH = str(ROOT / "train.csv")
+TEST_PATH = str(ROOT / "test.csv")
+SAMPLE_SUB_PATH = str(ROOT / "sample_submission.csv")
 
 SEED = 21
 N_FOLDS = 5
@@ -905,4 +909,3 @@ submission.to_csv("submission.csv", index=False)
 
 print("Saved: oof_predictions.csv")
 print("Saved: submission.csv")
-

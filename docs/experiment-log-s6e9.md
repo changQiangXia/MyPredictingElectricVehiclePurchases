@@ -298,7 +298,7 @@ public 前沿已从 0.94657 移到 **0.9468–0.9470**，来源是新的公开"�
 | 脚本/复现/来源/发布闸门 | `docs/script-index.md`、`docs/reproducibility.md`、`docs/sources.md`、`docs/release-checklist.md` | 是 |
 | 09-09 离线实验全记录（334 行） | `offline_experiments_2026-09-09.md`（仓库根目录，被 `.gitignore` 排除） | 否 |
 | 09-10 – 09-12 每日笔记（54 篇 + run-index） | `docs/internal/` | 否 |
-| 09-25/26/30 战役报告与提交账本 | `/root/autodl-tmp/s6e9_public/*.md`（仓库外） | 否 |
+| 09-25/26/30 战役报告与提交账本 | `s6e9_public/*.md`（本机工作区，仓库外） | 否 |
 | 探针/混合文件、下载的公开件、OOF/模型 | `s6e9_public/`、`artifacts/`、`intel/` | 否（数据类一律不入库） |
 
 ### 7.3 一句话总结
